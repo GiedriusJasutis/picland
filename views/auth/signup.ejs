@@ -1,0 +1,36 @@
+<%- include('../includes/head')%>
+<link rel="stylesheet" href="../../public/css/animation.css" />
+
+    <title>Authenticatios</title>
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="display-1 m-5 text-center animated tada">
+        Picland
+      </h1>
+      <p class="lead text-center">SignUp to your own picture warehouse</p>
+      <div class="row">
+        <div class="col-8 mx-auto">
+          <% if(errorMessage){ %>
+            <p class="alert alert-danger"><%= errorMessage %></p>
+          <% } %>
+          <form action="/auth/signup" method="post">
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input id="email" class="form-control" type="text" name="email" />
+            </div>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input id="password" class="form-control" type="text" name="password" />
+            </div>
+            <div class="form-group">
+              <label for="confirmPassw">Confirm password</label>
+              <input id="confirmPassw" class="form-control" type="text" name="confirmPassw" />
+            </div>
+            <button type="submit" class="btn btn-primary">Signup</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+<%- include('../includes/end')%>

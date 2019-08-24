@@ -1,0 +1,42 @@
+<%- include('includes/head')%>
+
+    <link rel="stylesheet" href="/public/css/animation.css" />
+    <link rel="stylesheet" href="./public/css/style.css" />
+
+    <title>Authenticatios</title>
+  </head>
+  <body>
+    <div class="">
+      <a class="btn btn-primary float-right mt-5 ml-2 mr-3" href="auth/signup"
+        >SignUp</a
+      >
+      
+      <a class="btn btn-primary float-right mt-5 ml-2" href="auth/login">Login</a>
+      <a class="btn btn-primary float-right mt-5 ml-2" href="admin/edit">my acount</a>
+    </div>
+    <div class="jumbotron main-bg-color">
+      <h1 class="display-4">Picland</h1>
+      <p class="lead">Add your favorite picture links</p>
+      <hr class="my-4" />
+      <p class="lead">Add image and descibe</p>
+    </div>
+
+    <div class="container">
+      <div class="card-columns">
+        <div class="card animated rollIn">
+          <img
+            class="card-img-top"
+            src="https://images.unsplash.com/photo-1535758447558-77807254caef?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=600&q=60"
+            alt=""
+          />
+          <div class="card-body">
+            <p class="card-title lead">description - about - events</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  
+
+    <%- include('includes/footer')%>
+    <%- include('includes/end')%>
