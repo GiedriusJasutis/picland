@@ -7,6 +7,7 @@ route.use(bodyParser.urlencoded({ extended: true }));
 
 route.get('/auth/login', authCtrl.getLogin);
 route.post('/auth/login', authCtrl.postLogin);
+
 route.get('/auth/signup', authCtrl.getSignup);
 route.post('/auth/signup', authCtrl.postSignup);
 

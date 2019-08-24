@@ -10,6 +10,9 @@
       </h1>
       <div class="row">
         <div class="col-8 mx-auto">
+            <% if(errorMessage){ %>
+              <p class="<%= msgStyle %>"><%= errorMessage %></p>
+            <% } %>
           <form method="post" action="/auth/login" class="mb-5">
             <div class="form-group">
               <label for="email">Email</label>

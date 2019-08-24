@@ -1,16 +1,32 @@
 const User = require('../models/User');
+// const Images = require('../models/Images');
 const bcrypt = require('bcryptjs');
 
-// after login session created
+// login
+
 exports.getLogin = (req, res) => {
-  req.session.isLoggedIn = true;
-  res.render('auth/login');
+  res.render('auth/login', {
+    errorMessage: undefined
+  });
 };
 
 exports.postLogin = (req, res) => {
-  console.log(req.body);
-  res.redirect('/');
+  const email = req.body.email;
+  const password = req.body.password;
+  User.findOne({ email: email }).then(user => {
+    if (!user) {
+      res.render('auth/login', {
+        errorMessage: 'User was not found',
+        msgStyle: 'alert alert-danger'
+      });
+    } else {
+      req.session.loggedIn = true;
+      res.redirect('/admin/edit');
+    }
+  });
 };
+
+// sign up
 
 exports.getSignup = (req, res) => {
   let message = req.flash('error');
@@ -29,29 +45,41 @@ exports.postSignup = (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
   const confirmPassw = req.body.confirmPassw;
-  if (password === confirmPassw) {
-    bcrypt
-      .hash(password, 12)
-      .then(hashedPassw => {
-        return new User({
-          email,
-          password: hashedPassw
-        });
-      })
-      .then(user => {
-        return user.save();
-      })
-      .then(result => {
-        console.log('User is saved');
-        res.redirect('/auth/login');
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  } else {
-    req.flash('error', 'Passwords not matching');
-    res.redirect('/auth/signup');
-  }
+
+  User.findOne({ email: email }).then(user => {
+    console.log(user);
+    if (!user) {
+      if (password === confirmPassw) {
+        bcrypt
+          .hash(password, 12)
+          .then(hashedPassw => {
+            // create user
+            return new User({
+              email,
+              password: hashedPassw
+            });
+          })
+          .then(user => {
+            return user.save();
+          })
+          .then(result => {
+            console.log('User is saved');
+            req.flash('accept', 'You signed up succesfully!');
+            res.redirect('/auth/login');
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      } else {
+        req.flash('error', 'Passwords not matching');
+        res.redirect('/auth/signup');
+      }
+    } else {
+      console.log('user exist');
+      req.flash('error', 'User with given email already exist');
+      res.redirect('/auth/signup');
+    }
+  });
 };
 
 exports.getLogout = (req, res, next) => {

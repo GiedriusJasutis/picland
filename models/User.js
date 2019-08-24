@@ -9,7 +9,21 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true
-  }
+  },
+
+  createImageStore: [
+    new mongoose.Schema({
+      image: {
+        type: String,
+        required: true
+      },
+
+      description: {
+        type: String,
+        required: true
+      }
+    })
+  ]
 });
 
 module.exports = mongoose.model('User', userSchema);
