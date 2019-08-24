@@ -58,7 +58,7 @@ app.use(adminRoute);
 mongoose
   .connect(DB_Connect, { useNewUrlParser: true })
   .then(result => {
-    app.listen(80, '192.168.2.8', () =>
+    app.listen(connectionData.port, () =>
       console.log(`Server runs on port ${connectionData.port}`)
     );
   })
