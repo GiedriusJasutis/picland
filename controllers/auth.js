@@ -1,12 +1,12 @@
 const User = require('../models/User');
 // const Images = require('../models/Images');
 const bcrypt = require('bcryptjs');
-
 // login
 
 exports.getLogin = (req, res) => {
   res.render('auth/login', {
-    errorMessage: undefined
+    errorMessage: undefined,
+    csrfToken: req.csrfToken()
   });
 };
 
@@ -16,12 +16,22 @@ exports.postLogin = (req, res) => {
   User.findOne({ email: email }).then(user => {
     if (!user) {
       res.render('auth/login', {
-        errorMessage: 'User was not found',
+        errorMessage: 'User with given email was not found',
         msgStyle: 'alert alert-danger'
       });
     } else {
-      req.session.loggedIn = true;
-      res.redirect('/admin/edit');
+      bcrypt.compare(password, user.password).then(isMatch => {
+        if (isMatch) {
+          req.session.loggedIn = true;
+          req.session.accountState = true;
+          return res.redirect('/admin/edit');
+        }
+
+        res.render('auth/login', {
+          errorMessage: 'Wrong password',
+          msgStyle: 'alert alert-danger'
+        });
+      });
     }
   });
 };

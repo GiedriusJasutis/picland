@@ -3,9 +3,11 @@ const path = require('path');
 const env = require('dotenv').config();
 const mongodb = require('mongodb');
 const mongoose = require('mongoose');
+const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const connectMongoSession = require('connect-mongodb-session')(session);
 const flash = require('connect-flash');
+const csrf = require('csurf');
 
 // environment
 const connectionData = {
@@ -32,6 +34,10 @@ const store = new connectMongoSession({
   collection: 'session'
 });
 
+// parse cookies
+// we need this because "cookie" is true in csrfProtection
+app.use(cookieParser());
+
 app.use(
   session({
     secret: 'secret password',
@@ -43,6 +49,16 @@ app.use(
 
 // flash
 app.use(flash());
+
+// csrf token
+const csrfProtection = csrf();
+app.use(csrfProtection);
+
+// app.use((req, res, next) => {
+//   res.locals.isAuthenticated = req.session.loggedIn;
+//   res.locals.csrfToken = req.csrfToken(); // generated value
+//   next();
+// });
 
 // use routes
 const indexRoute = require('./routes/index');

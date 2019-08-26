@@ -4,8 +4,10 @@
     <title>Authenticatios</title>
   </head>
   <body>
-  <a class="btn btn-primary float-right mt-5 ml-2 mr-3" href="/auth/logout">Logout</a>
-  <a class="btn btn-primary float-right mt-5 ml-2" href="/">Back To Picland</a>
+    <div class="page-container">
+      <div class="content-wrap">
+        <a class="btn btn-primary float-right mt-5 ml-2 mr-3" href="/auth/logout">Logout</a>
+  <a class="btn btn-primary float-right mt-5 ml-2" href="/">To Picland</a>
     <div class="jumbotron main-bg-color">
       <h1 class="display-4">Picland</h1>
       <p class="lead">Add your favorite picture links</p>
@@ -31,8 +33,8 @@
             name="describe"
           ></textarea>
         </div>
+        <input class="form-control" type="text" name="_csrf" value="<%= csrfToken %>" />
         <button type="submit" class="btn btn-primary">Add/Update</button>
-        <a class="btn btn-primary" href="/edit">Edit</a>
       </form>
     </div>
 
@@ -49,13 +51,16 @@
           </div>
 
           <!--Delete button will be hidded-->
-          <form action="/delete" action="post">
-            <button type="submit" class="btn btn-primary m-3">Edit/Delete</button>
+          <form action="/delete" action="post" class="form-inline">
+            <input class="form-control" type="text" name="_csrf" value="<%= csrfToken %>" />
+            <button type="submit" class="btn btn-dark m-3">Delete</button>
+            <a class="btn btn-primary float-left" href="/edit">Edit</a>
           </form>
         </div>
       </div>
+    </div>  
+      </div>
     </div>
-
    
 <%- include('../includes/footer')%>
 <%- include('../includes/end')%>
