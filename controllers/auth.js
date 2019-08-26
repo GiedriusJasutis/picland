@@ -1,8 +1,8 @@
 const User = require('../models/User');
 // const Images = require('../models/Images');
 const bcrypt = require('bcryptjs');
-// login
 
+// open login form
 exports.getLogin = (req, res) => {
   res.render('auth/login', {
     errorMessage: undefined,
@@ -10,6 +10,7 @@ exports.getLogin = (req, res) => {
   });
 };
 
+// user logins with his own credentials
 exports.postLogin = (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
@@ -17,7 +18,8 @@ exports.postLogin = (req, res) => {
     if (!user) {
       res.render('auth/login', {
         errorMessage: 'User with given email was not found',
-        msgStyle: 'alert alert-danger'
+        msgStyle: 'alert alert-danger',
+        csrfToken: req.csrfToken()
       });
     } else {
       bcrypt.compare(password, user.password).then(isMatch => {
@@ -29,15 +31,15 @@ exports.postLogin = (req, res) => {
 
         res.render('auth/login', {
           errorMessage: 'Wrong password',
-          msgStyle: 'alert alert-danger'
+          msgStyle: 'alert alert-danger',
+          csrfToken: req.csrfToken()
         });
       });
     }
   });
 };
 
-// sign up
-
+// get signup form
 exports.getSignup = (req, res) => {
   let message = req.flash('error');
   if (message.length > 0) {
@@ -47,17 +49,18 @@ exports.getSignup = (req, res) => {
   }
 
   res.render('auth/signup', {
-    errorMessage: message
+    errorMessage: message,
+    csrfToken: req.csrfToken()
   });
 };
 
+// new user signup
 exports.postSignup = (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
   const confirmPassw = req.body.confirmPassw;
 
   User.findOne({ email: email }).then(user => {
-    console.log(user);
     if (!user) {
       if (password === confirmPassw) {
         bcrypt
@@ -92,6 +95,7 @@ exports.postSignup = (req, res) => {
   });
 };
 
+// user logout
 exports.getLogout = (req, res, next) => {
   req.session.destroy();
   res.redirect('/');

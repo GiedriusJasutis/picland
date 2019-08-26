@@ -33,7 +33,7 @@
             name="describe"
           ></textarea>
         </div>
-        <input class="form-control" type="text" name="_csrf" value="<%= csrfToken %>" />
+        
         <button type="submit" class="btn btn-primary">Add/Update</button>
       </form>
     </div>
@@ -52,7 +52,7 @@
 
           <!--Delete button will be hidded-->
           <form action="/delete" action="post" class="form-inline">
-            <input class="form-control" type="text" name="_csrf" value="<%= csrfToken %>" />
+            
             <button type="submit" class="btn btn-dark m-3">Delete</button>
             <a class="btn btn-primary float-left" href="/edit">Edit</a>
           </form>

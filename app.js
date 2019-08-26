@@ -9,6 +9,8 @@ const connectMongoSession = require('connect-mongodb-session')(session);
 const flash = require('connect-flash');
 const csrf = require('csurf');
 
+const protectCsrf = csrf();
+
 // environment
 const connectionData = {
   port: process.env.PORT,
@@ -47,18 +49,15 @@ app.use(
   })
 );
 
-// flash
-app.use(flash());
-
-// csrf token
-const csrfProtection = csrf();
-app.use(csrfProtection);
+// app.use(protectCsrf);
 
 // app.use((req, res, next) => {
-//   res.locals.isAuthenticated = req.session.loggedIn;
-//   res.locals.csrfToken = req.csrfToken(); // generated value
+//   res.locals.csrfToken = req.csrfToken();
 //   next();
 // });
+
+// flash
+app.use(flash());
 
 // use routes
 const indexRoute = require('./routes/index');

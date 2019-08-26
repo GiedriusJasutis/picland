@@ -22,10 +22,9 @@
               <label for="password">Password</label>
               <input id="password" class="form-control" type="text" name="password" />
             </div>
-            <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             <button type="submit" class="btn btn-primary ">Login</button>
           </form>
-          <p> <%= csrfToken %></p>
           <a href="/auth/reset-password" >Reset password</a>
         </div>
       </div>

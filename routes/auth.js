@@ -6,6 +6,14 @@ const bodyParser = require('body-parser');
 
 route.use(bodyParser.urlencoded({ extended: true }));
 
+// csrf
+
+const csrf = require('csurf');
+const protectionCsrf = csrf();
+route.use(protectionCsrf);
+
+// Routes
+
 route.get('/auth/login', authCtrl.getLogin);
 route.post('/auth/login', authCtrl.postLogin);
 
