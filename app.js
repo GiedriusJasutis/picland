@@ -8,6 +8,8 @@ const session = require('express-session');
 const connectMongoSession = require('connect-mongodb-session')(session);
 const flash = require('connect-flash');
 const csrf = require('csurf');
+const bodyParser = require('body-parser');
+const User = require('./models/User');
 
 const protectCsrf = csrf();
 
@@ -25,6 +27,9 @@ const app = express();
 
 // views
 app.set('view engine', 'ejs');
+
+// body parser
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // public
 app.use('/public', express.static(path.join(__dirname, 'public')));
@@ -63,6 +68,21 @@ app.use(flash());
 const indexRoute = require('./routes/index');
 const authRoute = require('./routes/auth');
 const adminRoute = require('./routes/admin');
+
+// use session data (were stored user) to set user id to User model and then add user to request object
+app.use((req, res, next) => {
+  if (!req.session.user) {
+    return next();
+  }
+  User.findById(req.session.user._id)
+    .then(user => {
+      req.user = user;
+      next();
+    })
+    .catch(err => {
+      console.log(err);
+    });
+});
 
 app.use(indexRoute);
 app.use(authRoute);

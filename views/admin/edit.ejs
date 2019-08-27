@@ -33,30 +33,36 @@
             name="describe"
           ></textarea>
         </div>
-        
         <button type="submit" class="btn btn-primary">Add/Update</button>
       </form>
     </div>
 
     <div class="container">
       <div class="card-columns">
-        <div class="card animated rollIn">
+        <% if(userCards.length !== 0){ %>
+          <% userCards.forEach(card => { %>
+            <div class="card animated rollIn">
           <img
             class="card-img-top"
-            src="https://images.unsplash.com/photo-1535758447558-77807254caef?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=600&q=60"
+            src="<%= card.image%>"
             alt=""
           />
           <div class="card-body">
-            <p class="card-title lead">describe</p>
+            <p class="card-title lead"><%= card.description %></p>
           </div>
 
           <!--Delete button will be hidded-->
-          <form action="/delete" action="post" class="form-inline">
-            
+          <form action="/delete" method="post">
+            <input type="hidden" name="deleteImage" value="<%=card._id %>">
             <button type="submit" class="btn btn-dark m-3">Delete</button>
-            <a class="btn btn-primary float-left" href="/edit">Edit</a>
           </form>
-        </div>
+          <a class="btn btn-primary float-left" href="/edit">Edit</a>
+        </div>    
+          <% })%>
+        <% }else{ %>
+          <h1>Emty image store</h1>
+        <% } %>
+
       </div>
     </div>  
       </div>

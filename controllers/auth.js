@@ -5,8 +5,7 @@ const bcrypt = require('bcryptjs');
 // open login form
 exports.getLogin = (req, res) => {
   res.render('auth/login', {
-    errorMessage: undefined,
-    csrfToken: req.csrfToken()
+    errorMessage: undefined
   });
 };
 
@@ -18,21 +17,20 @@ exports.postLogin = (req, res) => {
     if (!user) {
       res.render('auth/login', {
         errorMessage: 'User with given email was not found',
-        msgStyle: 'alert alert-danger',
-        csrfToken: req.csrfToken()
+        msgStyle: 'alert alert-danger'
       });
     } else {
       bcrypt.compare(password, user.password).then(isMatch => {
         if (isMatch) {
           req.session.loggedIn = true;
           req.session.accountState = true;
+          req.session.user = user;
           return res.redirect('/admin/edit');
         }
 
         res.render('auth/login', {
           errorMessage: 'Wrong password',
-          msgStyle: 'alert alert-danger',
-          csrfToken: req.csrfToken()
+          msgStyle: 'alert alert-danger'
         });
       });
     }
@@ -49,8 +47,7 @@ exports.getSignup = (req, res) => {
   }
 
   res.render('auth/signup', {
-    errorMessage: message,
-    csrfToken: req.csrfToken()
+    errorMessage: message
   });
 };
 
