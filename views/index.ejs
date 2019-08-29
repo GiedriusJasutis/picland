@@ -27,33 +27,55 @@
               <p class="lead">Add image and descibe</p>
             </div>
         
+
+            
             <div class="container">
               <div class="card-columns">
-                <div class="card animated rollIn">
-                  <img
-                    class="card-img-top"
-                    src="https://images.unsplash.com/photo-1535758447558-77807254caef?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=600&q=60"
-                    alt=""
-                  />
-                  <div class="card-body">
-                    <p class="card-title lead">description - about - events</p>
-                  </div>
-                </div>
+                <% if(userCards.length !== 0){ %>
+                  <% userCards.forEach(card => { %>
+                    <div class="card animated rollIn">
+                        <img data-toggle="modal" data-target="#<%= 'modal' + card._id %>"
+                        class="card-img-top imageCardPointer"
+                        src="<%= card.image %>"
+                        alt=""
+                        />
+                      <div class="card-body">
+                        <blockquote class="blockquote text-right">
+                          <p class="mb-0"><%= card.description %></p>
+                          <footer class="blockquote-footer">Created by <cite title="Source Title"><%= card.creator %></cite></footer>
+                        </blockquote>
+                      </div>
+                    </div>
+
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="<%= 'modal' + card._id %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                          <div class="modal-body">
+                              <img
+                              class="card-img-top"
+                              src="<%= card.image %>"
+                              alt=""
+                            />
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                  <% }) %>
+                <% } else {%>
+                    <h1>No cards</h1>
+                <% } %>
               </div>
             </div>
       </div>
     </div>
 
-  
-
     <%- include('includes/footer')%>
+    <script src="/public/js/imageModal.js"></script>
     <%- include('includes/end')%>
 
-<!--
-    <div class="page-container">
-      <div class="content-wrap">
-        
-      </div>
-    </div>
-
-    -->

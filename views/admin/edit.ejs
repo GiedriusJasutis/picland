@@ -7,66 +7,109 @@
     <div class="page-container">
       <div class="content-wrap">
         <a class="btn btn-primary float-right mt-5 ml-2 mr-3" href="/auth/logout">Logout</a>
-  <a class="btn btn-primary float-right mt-5 ml-2" href="/">To Picland</a>
-    <div class="jumbotron main-bg-color">
-      <h1 class="display-4">Picland</h1>
-      <p class="lead">Add your favorite picture links</p>
-      <hr class="my-4" />
-      <p class="lead">Add image and descibe</p>
+        <a class="btn btn-primary float-right mt-5 ml-2" href="/">To Picland</a>
+        
+        <div class="jumbotron main-bg-color">
+          <h1 class="display-4">Picland</h1>
+          <p class="lead">Add your favorite picture links</p>
+          <hr class="my-4" />
+          <p class="lead">Add image and descibe</p>
 
-      <form action="/add" method="post">
-        <div class="form-group">
-          <label for="imageUrl">Image url</label>
-          <input
-            id="imageUrl"
-            class="form-control"
-            type="text"
-            name="imageUrl"
-          />
+          <form action="/add" method="post">
+            <div class="form-group">
+              <label for="imageUrl">Image url</label>
+              <input
+                id="imageUrl"
+                class="form-control"
+                type="text"
+                name="imageUrl"
+                value="<% if (userCards.length !== 0) { %><%=userCards[0].image %><% }else{ %>''<% } %>"
+              />
+            </div>
+            <div class="form-group">
+              <label for="describe">Describe</label>
+              <textarea
+                id="describe"
+                class="form-control"
+                type="text"
+                name="describe"
+              ><% if (userCards.length !== 0) { %><%=userCards[0].description %><% }else{ %>''<% } %></textarea>
+            </div>
+            <div class="form-group">
+              <label for="creator">Creator (Optional)</label>
+              <input 
+                type="text" 
+                class="form-control" 
+                id="creator" 
+                name="creator"
+                value="<% if (userCards.length !== 0) { %><%=userCards[0].creator %><% }else{ %>''<% } %>"
+              >
+            </div>
+            <button type="submit" class="btn btn-primary"><%=(userCards.length !== 0) ? 'Update' : 'Add'%></button>
+          </form>
         </div>
-        <div class="form-group">
-          <label for="describe">Describe</label>
-          <textarea
-            id="describe"
-            class="form-control"
-            type="text"
-            name="describe"
-          ></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary">Add/Update</button>
-      </form>
-    </div>
 
     <div class="container">
       <div class="card-columns">
         <% if(userCards.length !== 0){ %>
           <% userCards.forEach(card => { %>
             <div class="card animated rollIn">
-          <img
-            class="card-img-top"
-            src="<%= card.image%>"
-            alt=""
-          />
-          <div class="card-body">
-            <p class="card-title lead"><%= card.description %></p>
+            <img data-toggle="modal" data-target="#<%='imageModalId' + card._id%>"
+              class="card-img-top imageCardPointer"
+              src="<%= card.image%>"
+              alt="<%= card.description %>"
+            />
+          
+            <div class="card-body">
+              <blockquote class="blockquote text-right">
+                <p class="mb-0"><%= card.description %></p>
+                <footer class="blockquote-footer">Created by <cite title="Source Title"><%= card.creator %></cite></footer>
+              </blockquote>
+            </div>
+            <!-- Modal -->
+            <div class="modal fade" id="<%='imageModalId' + card._id%>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-body">
+                    <img
+                    class="card-img-top"
+                    src="<%= card.image%>"
+                    alt="<%= card.description %>"
+                  />
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
           </div>
 
           <!--Delete button will be hidded-->
-          <form action="/delete" method="post">
-            <input type="hidden" name="deleteImage" value="<%=card._id %>">
-            <button type="submit" class="btn btn-dark m-3">Delete</button>
-          </form>
-          <a class="btn btn-primary float-left" href="/edit">Edit</a>
+          <div class="row m-2">
+            <div class="col-6 float-left">
+              <form action="/delete" method="post">
+                <input type="hidden" name="deleteImage" value="<%=card._id %>">
+                <button type="submit" class="btn btn-dark">Delete</button>
+              </form>
+            </div>
+            <div class="col-6">
+              <a class="btn btn-primary float-right" href="/edit/<%= card._id %>">Edit</a>
+            </div>  
+          </div>
+          
         </div>    
           <% })%>
-        <% }else{ %>
-          <h1>Emty image store</h1>
-        <% } %>
-
-      </div>
-    </div>  
       </div>
     </div>
+    <% }else{ %>
+          
+    <% } %> 
+  </div> 
+</div>
+
+
    
+
 <%- include('../includes/footer')%>
+<script src="/public/js/imageModal.js"></script>
 <%- include('../includes/end')%>

@@ -89,11 +89,10 @@ app.use(authRoute);
 app.use(adminRoute);
 
 //connectionData.port
-
 mongoose
   .connect(DB_Connect, { useNewUrlParser: true })
   .then(result => {
-    app.listen(connectionData.port, () =>
+    app.listen(3000, () =>
       console.log(`Server runs on port ${connectionData.port}`)
     );
   })
